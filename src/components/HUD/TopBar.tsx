@@ -56,27 +56,27 @@ export const TopBar: React.FC<TopBarProps> = ({
     activeRole === 'partner_1' ? settings.partner1_name : settings.partner2_name;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 p-3 sm:p-5 flex items-center justify-between pointer-events-none select-none">
+    <header className="fixed top-0 left-0 right-0 z-40 p-2.5 sm:p-5 flex items-center justify-between pointer-events-none select-none">
       {/* Left: Brand & Current Location */}
-      <div className="flex items-center gap-2 sm:gap-3 pointer-events-auto">
-        <div className="glass-panel px-3.5 py-2 rounded-2xl flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-[#ebcad8] to-[#beb5e9] flex items-center justify-center text-[#2c243b]">
-            <Heart className="w-4 h-4 fill-[#2c243b]" />
+      <div className="flex items-center gap-2 pointer-events-auto">
+        <div className="glass-panel px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-2xl flex items-center gap-2">
+          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-xl bg-gradient-to-tr from-[#ebcad8] to-[#beb5e9] flex items-center justify-center text-[#2c243b] shrink-0">
+            <Heart className="w-3.5 h-3.5 fill-[#2c243b]" />
           </div>
-          <div>
-            <div className="text-xs font-semibold tracking-wide text-white flex items-center gap-1.5">
-              <span>{settings.couple_name}’s Island</span>
+          <div className="truncate max-w-[120px] xs:max-w-[160px] sm:max-w-none">
+            <div className="text-[11px] sm:text-xs font-semibold tracking-wide text-white truncate">
+              {settings.couple_name}’s Island
             </div>
-            <div className="text-[11px] text-[#ebcad8] font-medium flex items-center gap-1">
-              <Compass className="w-3 h-3 text-[#ebcad8]" />
-              <span>{currentLocation.name}</span>
+            <div className="text-[10px] sm:text-[11px] text-[#ebcad8] font-medium flex items-center gap-1 truncate">
+              <Compass className="w-2.5 h-2.5 text-[#ebcad8] shrink-0" />
+              <span className="truncate">{currentLocation.name}</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Right: Controls & Profile */}
-      <div className="flex items-center gap-2 pointer-events-auto">
+      <div className="flex items-center gap-1.5 sm:gap-2 pointer-events-auto shrink-0">
         {/* Atmosphere Menu Button */}
         <div className="relative">
           <button
@@ -84,7 +84,7 @@ export const TopBar: React.FC<TopBarProps> = ({
               setShowAtmosphereMenu(!showAtmosphereMenu);
               setShowProfileMenu(false);
             }}
-            className="glass-panel px-3 py-2 rounded-2xl flex items-center gap-1.5 text-xs text-white/80 hover:text-white transition-colors"
+            className="glass-panel p-2 sm:px-3 sm:py-2 rounded-2xl flex items-center gap-1.5 text-xs text-white/80 hover:text-white transition-colors"
             title="Lighting & Weather"
           >
             {timeOfDay === 'sunset' && <Sunset className="w-4 h-4 text-[#ffb088]" />}
@@ -165,7 +165,7 @@ export const TopBar: React.FC<TopBarProps> = ({
         {/* Audio Ambient Mute Button */}
         <button
           onClick={onToggleMute}
-          className="glass-panel p-2.5 rounded-2xl text-white/80 hover:text-white transition-colors"
+          className="glass-panel p-2 sm:p-2.5 rounded-2xl text-white/80 hover:text-white transition-colors"
           title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
         >
           {isMuted ? (
@@ -182,7 +182,8 @@ export const TopBar: React.FC<TopBarProps> = ({
               setShowProfileMenu(!showProfileMenu);
               setShowAtmosphereMenu(false);
             }}
-            className="glass-panel px-3 py-2 rounded-2xl flex items-center gap-2 text-xs text-white hover:border-[#ebcad8]/40 transition-colors"
+            className="glass-panel p-1.5 sm:px-3 sm:py-2 rounded-2xl flex items-center gap-1.5 text-xs text-white hover:border-[#ebcad8]/40 transition-colors"
+            title={`Active: ${activePartnerName}`}
           >
             <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-[#ebcad8] to-[#beb5e9] flex items-center justify-center text-[10px] font-bold text-[#2c243b]">
               {activePartnerName.charAt(0)}
@@ -243,10 +244,11 @@ export const TopBar: React.FC<TopBarProps> = ({
         {/* Full Dashboard Button */}
         <button
           onClick={onOpenDashboard}
-          className="glass-panel px-3.5 py-2 rounded-2xl flex items-center gap-2 text-xs font-medium text-[#fff5e9] bg-[#ebcad8]/20 hover:bg-[#ebcad8]/30 border border-[#ebcad8]/40 transition-all shadow-md active:scale-95"
+          className="glass-panel p-2 sm:px-3.5 sm:py-2 rounded-2xl flex items-center gap-1.5 text-xs font-medium text-[#fff5e9] bg-[#ebcad8]/20 hover:bg-[#ebcad8]/30 border border-[#ebcad8]/40 transition-all shadow-md active:scale-95"
+          title="Open Dashboard"
         >
           <Layers className="w-3.5 h-3.5 text-[#ebcad8]" />
-          <span>Dashboard</span>
+          <span className="hidden sm:inline">Dashboard</span>
         </button>
       </div>
     </header>

@@ -35,7 +35,7 @@ export const BottomDock: React.FC<BottomDockProps> = ({
   hoveredObjectName,
   compassAngle,
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(() => window.innerWidth < 768);
   const [showControlsHelp, setShowControlsHelp] = useState(false);
 
   const getIcon = (iconName: string) => {
@@ -65,9 +65,9 @@ export const BottomDock: React.FC<BottomDockProps> = ({
     <div
       className="fixed z-40 transition-transform duration-300 pointer-events-none select-none flex flex-col items-center"
       style={{
-        bottom: '20px',
+        bottom: window.innerWidth < 768 ? '8px' : '20px',
         left: '50%',
-        transform: `translateX(-50%) translateY(${isCollapsed ? 'calc(100% - 28px)' : '0'})`,
+        transform: `translateX(-50%) translateY(${isCollapsed ? 'calc(100% - 24px)' : '0'})`,
         maxWidth: 'min(940px, 95vw)',
         width: '100%',
       }}

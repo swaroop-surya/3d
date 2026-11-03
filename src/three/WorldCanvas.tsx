@@ -113,6 +113,7 @@ export const WorldCanvas: React.FC<WorldCanvasProps> = ({
     renderer.shadowMap.enabled = !isSoftwareGl;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
+    renderer.domElement.style.touchAction = 'none';
     mountRef.current.appendChild(renderer.domElement);
 
     // 3. Environment Map (PMREM)

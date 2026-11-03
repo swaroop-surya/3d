@@ -153,25 +153,9 @@ export class CameraController {
     }
   };
 
-  private handlePointerDown = (e: PointerEvent) => {
-    // Only drag look if clicking directly on canvas, not button overlays
-    if ((e.target as HTMLElement) !== this.domElement) return;
+  private lookPointerId: number | null = null;
 
-    this.isPointerDown = true;
-    this.lastPointerX = e.clientX;
-    this.lastPointerY = e.clientY;
-  };
-
-  private handlePointerMove = (e: PointerEvent) => {
-    if (!this.isPointerDown) return;
-
-    const dx = e.clientX - this.lastPointerX;
-    const dy = e.clientY - this.lastPointerY;
-
-    this.lastPointerX = e.clientX;
-    this.lastPointerY = e.clientY;
-
-    const sensitivity = 0.0035;
+  public rotateCameraDelta(dx: number, dy: number, sensitivity: number = 0.0038) {
     this.targetYaw -= dx * sensitivity;
     this.targetPitch -= dy * sensitivity;
 
@@ -182,10 +166,36 @@ export class CameraController {
     if (this.isTransitioning) {
       this.isTransitioning = false;
     }
+  }
+
+  private handlePointerDown = (e: PointerEvent) => {
+    // Only drag look if clicking directly on canvas, not button overlays
+    if ((e.target as HTMLElement) !== this.domElement) return;
+    if (this.lookPointerId !== null) return;
+
+    this.lookPointerId = e.pointerId;
+    this.isPointerDown = true;
+    this.lastPointerX = e.clientX;
+    this.lastPointerY = e.clientY;
   };
 
-  private handlePointerUp = () => {
-    this.isPointerDown = false;
+  private handlePointerMove = (e: PointerEvent) => {
+    if (!this.isPointerDown || e.pointerId !== this.lookPointerId) return;
+
+    const dx = e.clientX - this.lastPointerX;
+    const dy = e.clientY - this.lastPointerY;
+
+    this.lastPointerX = e.clientX;
+    this.lastPointerY = e.clientY;
+
+    this.rotateCameraDelta(dx, dy, 0.0035);
+  };
+
+  private handlePointerUp = (e: PointerEvent) => {
+    if (e.pointerId === this.lookPointerId) {
+      this.lookPointerId = null;
+      this.isPointerDown = false;
+    }
   };
 
   private handleWheel = (e: WheelEvent) => {
