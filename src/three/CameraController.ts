@@ -263,31 +263,43 @@ export class CameraController {
     this.yaw = THREE.MathUtils.damp(this.yaw, this.targetYaw, 12, delta);
     this.pitch = THREE.MathUtils.damp(this.pitch, this.targetPitch, 12, delta);
 
-    // Compute look direction from yaw and pitch
-    const forward = new THREE.Vector3(
+    // Compute 3D look direction from yaw and pitch (for camera aim)
+    const lookForward = new THREE.Vector3(
       -Math.sin(this.yaw) * Math.cos(this.pitch),
       Math.sin(this.pitch),
       -Math.cos(this.yaw) * Math.cos(this.pitch)
     ).normalize();
 
-    const right = new THREE.Vector3(-forward.z, 0, forward.x).normalize();
+    // Horizontal movement vectors (strictly on X/Z ground plane)
+    // This ensures joystick forward/back and strafe moves across the island without changing altitude
+    const horizontalForward = new THREE.Vector3(
+      -Math.sin(this.yaw),
+      0,
+      -Math.cos(this.yaw)
+    ).normalize();
+    const horizontalRight = new THREE.Vector3(-horizontalForward.z, 0, horizontalForward.x).normalize();
     const up = new THREE.Vector3(0, 1, 0);
 
-    // Keyboard & Joystick movement
+    // Movement direction accumulator
     const moveDir = new THREE.Vector3();
 
-    if (this.keysPressed.has('KeyW') || this.keysPressed.has('ArrowUp')) moveDir.add(forward);
-    if (this.keysPressed.has('KeyS') || this.keysPressed.has('ArrowDown')) moveDir.sub(forward);
-    if (this.keysPressed.has('KeyA') || this.keysPressed.has('ArrowLeft')) moveDir.sub(right);
-    if (this.keysPressed.has('KeyD') || this.keysPressed.has('ArrowRight')) moveDir.add(right);
+    // Desktop keyboard horizontal navigation
+    if (this.keysPressed.has('KeyW') || this.keysPressed.has('ArrowUp')) moveDir.add(horizontalForward);
+    if (this.keysPressed.has('KeyS') || this.keysPressed.has('ArrowDown')) moveDir.sub(horizontalForward);
+    if (this.keysPressed.has('KeyA') || this.keysPressed.has('ArrowLeft')) moveDir.sub(horizontalRight);
+    if (this.keysPressed.has('KeyD') || this.keysPressed.has('ArrowRight')) moveDir.add(horizontalRight);
+
+    // Desktop elevation
     if (this.keysPressed.has('Space')) moveDir.add(up);
     if (this.keysPressed.has('KeyC') || this.keysPressed.has('ControlLeft')) moveDir.sub(up);
 
-    // Touch joystick contribution
+    // Mobile Virtual Joystick: pure horizontal navigation (Forward, Backward, Strafe Left/Right)
     if (this.virtualJoystick.x !== 0 || this.virtualJoystick.y !== 0) {
-      moveDir.addScaledVector(right, this.virtualJoystick.x);
-      moveDir.addScaledVector(forward, -this.virtualJoystick.y);
+      moveDir.addScaledVector(horizontalRight, this.virtualJoystick.x);
+      moveDir.addScaledVector(horizontalForward, this.virtualJoystick.y);
     }
+
+    // Mobile Elevation Arrows: pure vertical altitude control
     if (this.virtualVertical !== 0) {
       moveDir.addScaledVector(up, this.virtualVertical);
     }
@@ -308,7 +320,7 @@ export class CameraController {
     this.camera.position.copy(this.currentPos);
 
     // Update camera lookAt
-    const lookTarget = new THREE.Vector3().copy(this.currentPos).add(forward);
+    const lookTarget = new THREE.Vector3().copy(this.currentPos).add(lookForward);
     this.camera.lookAt(lookTarget);
 
     // Detect closest location
