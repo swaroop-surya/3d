@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1727;
+    color: #e2d9f3;
+  }
+  h1, h2, h3, h4, .font-serif {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+}
+
+/* Custom scrollbars for modals */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(210, 195, 240, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(210, 195, 240, 0.45);
+}
+
+/* Glassmorphic panels */
+.glass-panel {
+  background: rgba(30, 26, 45, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(220, 210, 248, 0.14);
+  box-shadow: 0 16px 36px -8px rgba(12, 10, 22, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.glass-pill {
+  background: rgba(35, 30, 52, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(220, 210, 248, 0.16);
+}
+
+.glass-button {
+  background: rgba(235, 202, 216, 0.18);
+  border: 1px solid rgba(235, 202, 216, 0.35);
+  color: #fff5e9;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-button:hover {
+  background: rgba(235, 202, 216, 0.3);
+  border-color: rgba(235, 202, 216, 0.6);
+  transform: translateY(-1px);
+}
+.glass-button:active {
+  transform: translateY(0);
+}

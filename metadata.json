@@ -1,0 +1,6 @@
+{
+  "name": "Floating Memory Island",
+  "description": "An interactive 3D private relationship memory world for two partners to preserve photographs, letters, diary entries, important milestones, and future dreams.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
